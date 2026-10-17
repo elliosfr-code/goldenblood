@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GoldenBlood – SunLife RP</title>
+<style>
+:root{--r:#b3121b;--r2:#e0222d;--g:#d4a017;--g2:#f3cf5b;--bg:#09090b;--c:#15151a;--t:#eee;--m:#9a9aa3}
+*{box-sizing:border-box;margin:0}html{scroll-behavior:smooth}
+body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--t);line-height:1.6}
+nav{position:sticky;top:0;z-index:9;display:flex;gap:18px;align-items:center;padding:14px 5vw;background:#09090bee;backdrop-filter:blur(6px);border-bottom:1px solid #2a1215;flex-wrap:wrap}
+nav b{color:var(--g);font-size:1.25rem;margin-right:auto;letter-spacing:3px}nav b i{color:var(--r2);font-style:normal}
+nav a{color:var(--t);text-decoration:none;font-size:.92rem}nav a:hover{color:var(--g2)}
+section{padding:70px 5vw;max-width:1100px;margin:auto}
+h2{color:var(--g);font-size:1.9rem;margin-bottom:6px}h2+.sub{color:var(--m);margin-bottom:24px}
+.hero{max-width:none;min-height:88vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;background:radial-gradient(circle at 50% 25%,#5a0d12 0,#1a0608 40%,#09090b 75%)}
+.hero h1{font-size:clamp(2.8rem,10vw,6.5rem);letter-spacing:8px;background:linear-gradient(90deg,var(--r2),var(--g2),var(--r2));-webkit-background-clip:text;color:transparent}
+.hero p{color:var(--m);margin:12px 0 26px;max-width:580px}
+.stats{display:flex;gap:34px;margin-top:40px;flex-wrap:wrap;justify-content:center}.stats div{text-align:center}.stats b{display:block;font-size:2rem;color:var(--g2)}.stats span{color:var(--m);font-size:.85rem}
+.btn{background:linear-gradient(135deg,var(--r),var(--r2));color:#fff;border:0;padding:11px 22px;border-radius:8px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block;font-size:.93rem}
+.btn:hover{filter:brightness(1.15)}.btn.g{background:#2a2a30}.btn.o{background:linear-gradient(135deg,var(--g),var(--g2));color:#000}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+.card{background:var(--c);border:1px solid #2a1c1e;border-radius:12px;padding:20px;transition:.2s}
+.grid .card:hover{border-color:var(--g);transform:translateY(-3px)}
+.card h3{color:var(--g2);margin-bottom:6px}.card p,.tag{color:var(--m);font-size:.9rem}
+.m{display:flex;align-items:center;gap:12px}
+.dot{width:12px;height:12px;border-radius:50%;background:#555;flex:none}.dot.v{background:#2ecc71;box-shadow:0 0 8px #2ecc71}.dot.o{background:#e67e22}
+.role{font-size:.7rem;color:var(--g);border:1px solid var(--g);border-radius:20px;padding:0 8px;margin-left:6px}
+.role.Admin{color:#fff;background:var(--r);border-color:var(--r)}
+input,select,textarea{width:100%;padding:10px;margin:5px 0;background:#0e0e11;border:1px solid #333;border-radius:8px;color:var(--t);font:inherit}
+.row{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+.news{border-left:3px solid var(--r2);margin-bottom:12px}.news small{color:var(--m)}
+#msg{color:#e74c3c;font-size:.9rem;min-height:1.2em}
+footer{text-align:center;padding:30px;color:var(--m);font-size:.85rem;border-top:1px solid #2a1215}
+</style>
+</head>
+<body>
+<nav><b>GOLDEN<i>BLOOD</i></b><a href="#presentation">Présentation</a><a href="#actions">Actions</a><a href="#annonces">Annonces</a><a href="#communaute">Communauté</a><a href="#portail">Portail</a></nav>
+
+<section class="hero">
+  <h1>GOLDENBLOOD</h1>
+  <p>Le sang rouge, l'or dans le cœur. Une famille, un code, une légende à SunLife.</p>
+  <div class="row"><a class="btn" href="#portail">Portail membres</a><a class="btn o" id="disc" href="#" target="_blank">Rejoindre le Discord</a></div>
+  <div class="stats"><div><b id="s1">0</b><span>Membres</span></div><div><b id="s2">0</b><span>En ville</span></div><div><b id="s3">0</b><span>Annonces</span></div></div>
+</section>
+
+<section id="presentation">
+  <h2>Notre histoire</h2><p class="sub">Qui sont les GoldenBlood</p>
+  <div class="card"><p id="histoire"></p></div>
+  <div class="grid" style="margin-top:16px" id="valeurs"></div>
+</section>
+
+<section id="actions"><h2>Nos actions dans la ville</h2><p class="sub">Ce qui fait tourner la famille</p><div class="grid" id="acts"></div></section>
+
+<section id="annonces"><h2>Annonces du gang</h2><p class="sub">Publiées par les chefs</p><div id="newsl"></div></section>
+
+<section id="communaute"><h2>La communauté</h2><p class="sub" id="count"></p><div class="grid" id="members"></div></section>
+
+<section id="portail">
+  <h2>Portail du gang</h2><p class="sub">Réservé aux membres</p>
+  <div class="card" id="login" style="max-width:420px">
+    <h3>Connexion</h3>
+    <input id="lp" placeholder="Pseudo RP"><input id="lc" type="password" placeholder="Code d'accès">
+    <p id="msg"></p><button class="btn" onclick="login()">Se connecter</button>
+  </div>
+  <div id="panel" style="display:none">
+    <div class="card">
+      <h3>Bonjour <span id="who"></span></h3>
+      <input id="note" maxlength="40" placeholder="Que fais-tu ? (ex : au garage, en braquage…)">
+      <div class="row">
+        <button class="btn" onclick="setS('En ville')">🟢 Je suis en ville</button>
+        <button class="btn g" onclick="setS('Occupé')">🟠 Occupé / en action</button>
+        <button class="btn g" onclick="setS('Hors ligne')">⚫ Hors ligne</button>
+        <button class="btn g" onclick="logout()">Déconnexion</button>
+      </div>
+    </div>
+    <div class="grid" id="admin" style="margin-top:16px;display:none">
+      <div class="card"><h3>Ajouter un membre</h3>
+        <input id="np" placeholder="Pseudo"><input id="nc" placeholder="Code d'accès"><select id="nr"><option>Membre</option><option>Chef</option></select>
+        <button class="btn" onclick="addM()">Ajouter</button>
+        <div id="alist" style="margin-top:12px"></div></div>
+      <div class="card"><h3>Publier une annonce</h3>
+        <input id="nt" placeholder="Titre"><textarea id="nb" rows="4" placeholder="Message"></textarea>
+        <button class="btn o" onclick="addN()">Publier</button>
+        <div id="nlist" style="margin-top:12px"></div></div>
+    </div>
+  </div>
+</section>
+<footer>© GoldenBlood – Projet de jeu de rôle fictif (SunLife RP)</footer>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script>
+/* ===== CONFIG : modifie ici ===== */
+const FIREBASE_CONFIG={apiKey:"",authDomain:"",projectId:"",appId:""}; // vide = mode démo local
+const ADMINS=[{pseudo:"Nathan",code:"changeme-nathan"},{pseudo:"Enzo",code:"changeme-enzo"}];
+const DISCORD_URL="https://discord.gg/TON-LIEN";
+const HISTOIRE="Les GoldenBlood sont nés dans les rues de SunLife, avec une idée simple : ensemble, on va plus loin. Chaque membre compte, chaque coup est préparé, chaque quartier se respecte. Notre sang est rouge, notre cœur est en or.";
+const VALEURS=[["Loyauté","On protège les nôtres, toujours."],["Organisation","Des rôles clairs, des plans carrés."],["Respect","Du fair-play RP, même dans le conflit."]];
+const ACTIONS=[["Contrôle de territoire","Présence et influence sur nos quartiers."],["Business","Les affaires qui font tourner la famille."],["Opérations","Coups planifiés avec toute l'équipe."],["Événements RP","Rassemblements, courses et soirées pour la ville."]];
+const EXPIRE_H=8; // "En ville" expire après 8 h
+/* ================================= */
+
+const FB=!!FIREBASE_CONFIG.apiKey, id=p=>p.trim().toLowerCase().replace(/[^a-z0-9]/g,"_");
+const esc=s=>String(s||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+let M=[],N=[],me=JSON.parse(sessionStorage.getItem("gb_me")||"null");
+
+function mk(name){
+  if(FB){const c=firebase.firestore().collection(name);
+    return{watch:cb=>c.onSnapshot(s=>cb(s.docs.map(d=>({_id:d.id,...d.data()})))),set:(k,v)=>c.doc(k).set(v),del:k=>c.doc(k).delete()};}
+  const K="gb_"+name,L=()=>JSON.parse(localStorage.getItem(K)||"{}"),cbs=[],fire=()=>cbs.forEach(f=>f(Object.entries(L()).map(([k,v])=>({_id:k,...v}))));
+  return{watch:cb=>{cbs.push(cb);fire()},set:(k,v)=>{const o=L();o[k]=v;localStorage.setItem(K,JSON.stringify(o));fire()},del:k=>{const o=L();delete o[k];localStorage.setItem(K,JSON.stringify(o));fire()}};
+}
+if(FB)firebase.initializeApp(FIREBASE_CONFIG);
+const SM=mk("members"),SN=mk("news");
+const eff=m=>m.status!=="Hors ligne"&&Date.now()-(m.ts||0)>EXPIRE_H*36e5?"Hors ligne":(m.status||"Hors ligne");
+const cls=s=>s==="En ville"?"v":s==="Occupé"?"o":"";
+const isStaff=m=>m&&(m.role==="Admin"||m.role==="Chef");
+
+function render(){
+  const on=M.filter(m=>eff(m)!=="Hors ligne").length;
+  s1.textContent=M.length;s2.textContent=on;s3.textContent=N.length;
+  count.textContent=`${on} en ligne sur ${M.length} membres`;
+  const so=[...M].sort((a,b)=>(eff(a)==="Hors ligne")-(eff(b)==="Hors ligne")||a.pseudo.localeCompare(b.pseudo));
+  members.innerHTML=so.map(m=>`<div class="card m"><span class="dot ${cls(eff(m))}"></span><div><b>${esc(m.pseudo)}</b><span class="role ${esc(m.role)}">${esc(m.role)}</span><br><span class="tag">${esc(eff(m))}${eff(m)!=="Hors ligne"&&m.note?" · "+esc(m.note):""}</span></div></div>`).join("");
+  newsl.innerHTML=N.map(n=>`<div class="card news"><h3>${esc(n.title)}</h3><p>${esc(n.body)}</p><small>${esc(n.author)} · ${new Date(n.ts).toLocaleDateString("fr-FR")}</small></div>`).join("")||'<p class="tag">Aucune annonce pour le moment.</p>';
+  const cur=me&&M.find(m=>m._id===id(me.pseudo));
+  if(me&&!cur&&M.length){logout();return}
+  if(cur){login_.style.display="none";panel.style.display="block";who.textContent=cur.pseudo;
+    admin.style.display=isStaff(cur)?"grid":"none";
+    alist.innerHTML=M.filter(m=>m.role!=="Admin").map(m=>`<div class="m" style="justify-content:space-between;margin:4px 0"><span>${esc(m.pseudo)} <span class="tag">${esc(m.role)}</span></span><button class="btn g" onclick="delM('${m._id}')">Retirer</button></div>`).join("");
+    nlist.innerHTML=N.map(n=>`<div class="m" style="justify-content:space-between;margin:4px 0"><span class="tag">${esc(n.title)}</span><button class="btn g" onclick="SN.del('${n._id}')">Suppr.</button></div>`).join("");}
+}
+const login_=document.getElementById("login");
+function login(){const m=M.find(x=>x._id===id(lp.value)&&x.code===lc.value);
+  if(!m){msg.textContent="Pseudo ou code incorrect.";return}
+  me={pseudo:m.pseudo};sessionStorage.setItem("gb_me",JSON.stringify(me));msg.textContent="";render()}
+function logout(){me=null;sessionStorage.removeItem("gb_me");login_.style.display="block";panel.style.display="none"}
+function setS(s){const m=M.find(x=>x._id===id(me.pseudo));if(m){const{_id,...d}=m;SM.set(_id,{...d,status:s,note:note.value.trim(),ts:Date.now()})}}
+function addM(){const p=np.value.trim(),c=nc.value.trim();if(!p||!c)return alert("Pseudo et code requis.");
+  if(M.find(x=>x._id===id(p)))return alert("Ce pseudo existe déjà.");
+  SM.set(id(p),{pseudo:p,code:c,role:nr.value,status:"Hors ligne",note:"",ts:Date.now()});np.value=nc.value=""}
+function delM(k){if(confirm("Retirer ce membre ?"))SM.del(k)}
+function addN(){if(!nt.value.trim())return;SN.set("n"+Date.now(),{title:nt.value.trim(),body:nb.value.trim(),author:me.pseudo,ts:Date.now()});nt.value=nb.value=""}
+
+if(DISCORD_URL.includes("TON-LIEN")||!DISCORD_URL)disc.style.display="none";else disc.href=DISCORD_URL;histoire.textContent=HISTOIRE;
+valeurs.innerHTML=VALEURS.map(v=>`<div class="card"><h3>${v[0]}</h3><p>${v[1]}</p></div>`).join("");
+acts.innerHTML=ACTIONS.map(v=>`<div class="card"><h3>${v[0]}</h3><p>${v[1]}</p></div>`).join("");
+setInterval(render,60000);
+SM.watch(l=>{M=l;ADMINS.forEach(a=>{if(!l.find(m=>m._id===id(a.pseudo)))SM.set(id(a.pseudo),{pseudo:a.pseudo,code:a.code,role:"Admin",status:"Hors ligne",note:"",ts:Date.now()})});render()});
+SN.watch(l=>{N=l.sort((a,b)=>b.ts-a.ts);render()});
+</script>
+</body>
+</html>
